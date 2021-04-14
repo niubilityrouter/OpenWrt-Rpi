@@ -20,7 +20,7 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  CONFIG_FILE: config/lean/bcm27xx/rpi1-lean-target.config
+  CONFIG_FILE: config/bcm27xx/rpi1-lean-target.config
   DIY_SH: scripts/lean-openwrt.sh
   IPV6MOD_IN_FIRMWARE: true
   KMODS_IN_FIRMWARE: true
@@ -67,7 +67,11 @@ jobs:
           cd openwrt
           echo "OPENWRTROOT=$PWD" >> $GITHUB_ENV
           echo "::set-output name=OPENWRTROOT::$(echo $PWD)"
-          ./scripts/feeds update -a
+          mkdir customfeeds
+          git clone --depth=1 https://github.com/coolsnowwolf/packages customfeeds/packages
+          git clone --depth=1 https://github.com/coolsnowwolf/luci customfeeds/luci
+          chmod +x ../scripts/*.sh
+          ../scripts/hook-feeds.sh
 
       - name: Install Feeds
         run: |
@@ -78,8 +82,7 @@ jobs:
         run: |
           [ -e files ] && mv files $OPENWRTROOT/files
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
-          cat config/lean/bcm27xx/rpi-lean-extra.config >> $OPENWRTROOT/.config
-          chmod +x scripts/*.sh
+          cat config/bcm27xx/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv6
@@ -91,7 +94,7 @@ jobs:
           cd $OPENWRTROOT
           if "$KMODS_IN_FIRMWARE" = 'true'
           then
-              echo "CONFIG_ALL_KMODS=y" >> .config
+              echo "CONFIG_ALL_NONSHARED=y" >> .config
           fi
           make defconfig
           make download -j8
