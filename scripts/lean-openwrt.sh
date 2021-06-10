@@ -19,6 +19,7 @@ pushd package/community
 
 # Add Lienol's Packages
 git clone --depth=1 https://github.com/Lienol/openwrt-package
+rm -rf ../lean/luci-app-kodexplorer
 
 # Add luci-app-passwall
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall
@@ -62,7 +63,9 @@ rm -rf ../lean/luci-theme-argon
 git clone --depth=1 https://github.com/tindy2013/openwrt-subconverter
 
 # Add luci-udptools
-git clone --depth=1 https://github.com/zcy85611/openwrt-luci-kcp-udp
+svn co https://github.com/zcy85611/Openwrt-Package/trunk/luci-udptools
+svn co https://github.com/zcy85611/Openwrt-Package/trunk/udp2raw
+svn co https://github.com/zcy85611/Openwrt-Package/trunk/udpspeeder-tunnel
 
 # Add OpenAppFilter
 git clone --depth=1 https://github.com/destan19/OpenAppFilter
@@ -70,9 +73,15 @@ git clone --depth=1 https://github.com/destan19/OpenAppFilter
 # Add luci-app-oled (R2S Only)
 git clone --depth=1 https://github.com/NateLol/luci-app-oled
 
-# Add driver for rtl8821cu & rtl8812au-ac
+# Add extra wireless drivers
 svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8812au-ac
 svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8821cu
+svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8188eu
+svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8192du
+svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl88x2bu
+
+# Add apk (Apk Packages Manager)
+svn co https://github.com/openwrt/packages/trunk/utils/apk
 popd
 
 # Mod zzz-default-settings
